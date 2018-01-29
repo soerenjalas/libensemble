@@ -65,6 +65,7 @@ def perform_calc(calc_in, gen_info, libE_info, calc_tag, locations, sim_specs, g
     if 'persistent' in libE_info and libE_info['persistent']:
         libE_info['comm'] = comm
 
+    #For kill - should pass in comm
     if calc_tag == EVAL_SIM_TAG: 
         out = sim_specs['sim_f'][0](calc_in,gen_info,sim_specs,libE_info)
     else: 
