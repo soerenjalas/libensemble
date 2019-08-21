@@ -112,6 +112,8 @@ libEnsemble is also available in the Spack_ distribution. It can be installed fr
 
     spack install py-libensemble
 
+Further information on :ref:`Spack installation of libEnsemble<install-spack>`.
+    
 .. _Spack: https://spack.readthedocs.io/en/latest
 
 The tests and examples can be accessed in the `GitHub <https://github.com/Libensemble/libensemble>`_ repository. If necessary, you may install all optional dependencies (listed above) at once with::
