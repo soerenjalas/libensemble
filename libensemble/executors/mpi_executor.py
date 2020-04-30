@@ -14,7 +14,7 @@ import time
 
 import libensemble.utils.launcher as launcher
 from libensemble.resources.mpi_resources import MPIResources
-from libensemble.executors.executor import Executor, Task, jassert
+from libensemble.executors.executor import Executor, Task, jassert, Application
 
 logger = logging.getLogger(__name__)
 # To change logging level for just this module
@@ -210,7 +210,7 @@ class MPIExecutor(Executor):
             else:
                 break
 
-    def submit(self, calc_type, num_procs=None, num_nodes=None,
+    def submit(self, calc_type=None, user_app=None, num_procs=None, num_nodes=None,
                ranks_per_node=None, machinefile=None, app_args=None,
                stdout=None, stderr=None, stage_inout=None,
                hyperthreads=False, test=False, wait_on_run=False,
@@ -276,7 +276,12 @@ class MPIExecutor(Executor):
         then the available resources will be divided among workers.
         """
 
-        app = self.default_app(calc_type)
+        if user_app is not None:
+            #app = self.register_calc(full_path=user_app, calc_type='sim')
+            app = Application(user_app, calc_type)
+        elif calc_type is not None:
+            app = self.default_app(calc_type)
+
         default_workdir = os.getcwd()
         task = Task(app, app_args, default_workdir, stdout, stderr, self.workerID)
 

@@ -80,9 +80,20 @@ def run_forces(H, persis_info, sim_specs, libE_info):
         machinefile = 'fail'
 
     # Machinefile only used here for exception testing
+
+    app1='/home/shudson/executor_fixup/libensemble/libensemble/tests/scaling_tests/forces/forces.x'
+    app2='/home/shudson/executor_fixup/libensemble/libensemble/tests/scaling_tests/forces/forces2.x'
+
+
     if cores:
-        task = exctr.submit(calc_type='sim', num_procs=cores, app_args=args,
-                            stdout='out.txt', stderr='err.txt', wait_on_run=True,
+        #task = exctr.submit(calc_type='sim', num_procs=cores, app_args=args,
+                            #stdout='out.txt', stderr='err.txt', wait_on_run=True,
+                            #machinefile=machinefile)
+        task = exctr.submit(user_app=app1, num_procs=cores, app_args=args,
+                            stdout='out1.txt', stderr='err1.txt', wait_on_run=True,
+                            machinefile=machinefile)
+        task = exctr.submit(user_app=app2, num_procs=cores, app_args=args,
+                            stdout='out2.txt', stderr='err2.txt', wait_on_run=True,
                             machinefile=machinefile)
     else:
         task = exctr.submit(calc_type='sim', app_args=args, stdout='out.txt',

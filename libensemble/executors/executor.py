@@ -59,7 +59,7 @@ class Application:
     """An application is an executable user-program
     (e.g., implementing a sim/gen function)."""
 
-    def __init__(self, full_path, calc_type='sim', desc=None):
+    def __init__(self, full_path, calc_type=None, desc=None):
         """Instantiates a new Application instance."""
         self.full_path = full_path
         self.calc_type = calc_type
@@ -69,8 +69,13 @@ class Application:
             self.full_path = ' '.join((sys.executable, full_path))
 
         # Use this name to delete tasks in database - see del_apps(), del_tasks()
-        self.name = self.exe + '.' + self.calc_type + 'func'
-        self.desc = desc or (self.exe + ' ' + self.calc_type + ' function')
+        if calc_type is not None:
+            self.name = self.exe + '.' + self.calc_type + 'func'
+            self.desc = desc or (self.exe + ' ' + self.calc_type + ' function')
+        else:
+            self.name = self.exe + '.func'
+            self.desc = desc or (self.exe + ' function')
+
 
 
 class Task:
@@ -308,7 +313,7 @@ class Executor:
         jassert(app, "Default {} app is not set".format(calc_type))
         return app
 
-    def register_calc(self, full_path, calc_type='sim', desc=None):
+    def register_calc(self, full_path, calc_type='sim', desc=None, set_default=True):
         """Registers a user application to libEnsemble
 
         Parameters
@@ -327,9 +332,10 @@ class Executor:
         """
         jassert(calc_type in self.default_apps,
                 "Unrecognized calculation type", calc_type)
-        jassert(self.default_apps[calc_type] is None,
-                "Default {} app already set".format(calc_type))
-        self.default_apps[calc_type] = Application(full_path, calc_type, desc)
+        if set_default:
+            jassert(self.default_apps[calc_type] is None,
+                    "Default {} app already set".format(calc_type))
+            self.default_apps[calc_type] = Application(full_path, calc_type, desc)
 
     def manager_poll(self, comm):
         """ Polls for a manager signal
