@@ -43,7 +43,14 @@ print(cmd)
 p = subprocess.Popen(cmd.split())
 p.wait()
 
-
-
+#Test definitly wrong
+mfile = 'mach3'
+with open(mfile, 'w') as f:
+    f.write('defwrong' + '\n')
+print_mach(mfile)
+cmd='mpirun -machinefile mach3 -np 1 --ppn 1 ./my_simtask.x sleep 1'
+print(cmd)
+p = subprocess.Popen(cmd.split())
+p.wait()
 
 
