@@ -106,10 +106,13 @@ install:
 
 before_script:
   - flake8 libensemble
+  - hostname
+  - hostname -s
 
 # Run test (-z show output)
 script:
   #- ./libensemble/tests/run-tests.sh -rz -$COMMS_TYPE
+  - python run_hl.py
   - python run_sp.py
 
 # Track code coverage

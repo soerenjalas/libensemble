@@ -16,6 +16,8 @@ def print_mach(mfile):
     with open(mfile, 'r') as f:
         print(f.read())
 
+print('\nRunning using machinefiles')
+
 buildstring = 'mpicc -o my_simtask.x libensemble/tests/unit_tests/simdir/my_simtask.c'
 subprocess.check_call(buildstring.split())
 
