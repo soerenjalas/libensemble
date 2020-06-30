@@ -118,3 +118,5 @@ after_success:
 
 after_failure:
 - cat libensemble/tests/regression_tests/log.err
+- cat libensemble/tests/regression_tests/ensemble.log
+- cat libensemble/tests/regression_tests/machinefile*
