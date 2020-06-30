@@ -23,12 +23,15 @@ from libensemble.sim_funcs.executor_hworld import executor_hworld as sim_f
 from libensemble.gen_funcs.sampling import uniform_random_sample as gen_f
 from libensemble.tools import parse_args, add_unique_random_streams
 from libensemble.tests.regression_tests.common import build_simfunc
+from libensemble import libE_logger
 
 # Do not change these lines - they are parsed by run-tests.sh
 # TESTSUITE_COMMS: mpi local tcp
 # TESTSUITE_NPROCS: 2 3 4
 
 nworkers, is_master, libE_specs, _ = parse_args()
+
+libE_logger.set_level('DEBUG')
 
 USE_BALSAM = False
 
@@ -58,7 +61,7 @@ if USE_BALSAM:
     exctr = BalsamMPIExecutor(auto_resources=use_auto_resources)
 else:
     from libensemble.executors.mpi_executor import MPIExecutor
-    exctr = MPIExecutor(auto_resources=use_auto_resources)
+    exctr = MPIExecutor(auto_resources=True)
 exctr.register_calc(full_path=sim_app, calc_type='sim')
 
 # if nworkers == 3:

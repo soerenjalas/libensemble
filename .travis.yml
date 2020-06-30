@@ -109,7 +109,7 @@ before_script:
 
 # Run test (-z show output)
 script:
-  #- ./libensemble/tests/run-tests.sh -rz -$COMMS_TYPE
+  - ./libensemble/tests/run-tests.sh -rz -$COMMS_TYPE
   - python run_sp.py
 
 # Track code coverage
