@@ -109,7 +109,7 @@ before_script:
 
 # Run test (-z show output)
 script:
-  - ./libensemble/tests/run-tests.sh -rz -$COMMS_TYPE
+  #- ./libensemble/tests/run-tests.sh -rz -$COMMS_TYPE
   - python run_sp.py
 
 # Track code coverage
@@ -120,6 +120,6 @@ after_success:
 after_failure:
 - cat libensemble/tests/regression_tests/log.err
 
-after_script:
-- cat libensemble/tests/regression_tests/ensemble.log
-- cat libensemble/tests/regression_tests/machinefile*
+#after_script:
+#- cat libensemble/tests/regression_tests/ensemble.log
+#- cat libensemble/tests/regression_tests/machinefile*
