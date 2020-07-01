@@ -111,9 +111,9 @@ before_script:
 
 # Run test (-z show output)
 script:
-  #- ./libensemble/tests/run-tests.sh -rz -$COMMS_TYPE
-  - python run_hl.py
-  - python run_sp.py
+  - ./libensemble/tests/run-tests.sh -rz -$COMMS_TYPE
+  #- python run_hl.py
+  #- python run_sp.py
 
 # Track code coverage
 after_success:
