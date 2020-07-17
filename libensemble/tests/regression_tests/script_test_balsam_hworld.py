@@ -80,7 +80,7 @@ if is_master:
     # Check summary file:
     print('Checking expected task status against task summary file ...\n')
 
-    calc_desc_list_in = ['Completed', 'Worker killed task on Error',, 'Completed',
+    calc_desc_list_in = ['Completed', 'Worker killed task on Error', 'Completed',
                          'Worker killed task on Timeout', 'Task Failed',
                          'Manager killed on finish']
 
