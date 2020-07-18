@@ -72,13 +72,13 @@ def wait_for_job_output(jobdir):
 
 def print_job_output(outscript):
     sleeptime = 0
-    limit = 60
+    limit = 80
 
     print('Blank output file found. Waiting for expected complete Balsam Job Output.')
     succeed_line = 'Received:  [34 34 31 31 34 34 32 32 33 33  0  0]\n'
 
     lastposition = 0
-
+    print('outscript is {} limit is {}'.format(outscript, limit),flush=True)
     while sleeptime < limit:
         with open(outscript, 'r') as f:
             f.seek(lastposition)
@@ -86,7 +86,7 @@ def print_job_output(outscript):
             lastposition = f.tell()
 
         if len(new) > 0:
-            print(new, flush=True)
+            print('new is'.format(new), flush=True)
         else:
             print(sleeptime, end=" ", flush=True)
 
