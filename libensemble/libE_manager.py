@@ -455,6 +455,7 @@ class Manager:
                         if self.term_test():
                             break
                         self._check_work_order(Work[w], w)
+                        print('nkag Time b4 send to worker: {}. {} sec. type {}'.format(w,self.elapsed(),Work[w]['tag']),flush=True)
                         self._send_work_order(Work[w], w)
                         self._update_state_on_alloc(Work[w], w)
                 assert self.term_test() or any(self.W['active'] != 0), \

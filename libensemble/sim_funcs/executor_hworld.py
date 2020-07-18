@@ -92,8 +92,8 @@ def executor_hworld(H, persis_info, sim_specs, libE_info):
     elif sim_count == 5:
         args_for_sim = 'sleep 1 Fail'  # Manager kill - if signal received else completes
     elif sim_count == 6:
-        args_for_sim = 'sleep 18'  # Manager kill - if signal received else completes
-        timeout = 20.0
+        args_for_sim = 'sleep 60'  # Manager kill - if signal received else completes
+        timeout = 65.0
 
     if use_balsam:
         task = exctr.submit(calc_type='sim', num_procs=cores, app_args=args_for_sim,
@@ -123,6 +123,8 @@ def executor_hworld(H, persis_info, sim_specs, libE_info):
 
     # assert task.finished, "task.finished should be True. Returned " + str(task.finished)
     # assert task.state == 'FINISHED', "task.state should be FINISHED. Returned " + str(task.state)
+    wid = libE_info['workerID']
+    print('worker {} scount {} state {}'.format(wid, sim_count, task.state),flush=True)
 
     # This is temp - return something - so doing six_hump_camel_func again...
     batch = len(H['x'])
