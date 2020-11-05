@@ -132,6 +132,7 @@ class Manager:
         timer.start()
         self.date_start = timer.date_start.replace(' ', '_')
         self.safe_mode = libE_specs.get('safe_mode', True)
+        self.anything_new = True  # Set to True so alloc_f is called the first time
         self.hist = hist
         self.libE_specs = libE_specs
         self.alloc_specs = alloc_specs
@@ -323,6 +324,7 @@ class Manager:
                 if self.wcomms[w-1].mail_flag():
                     new_stuff = True
                     self._handle_msg_from_worker(persis_info, w)
+                    self.anything_new = True
 
         if 'save_every_k_sims' in self.libE_specs:
             self._save_every_k_sims()
@@ -462,7 +464,8 @@ class Manager:
         try:
             while not self.term_test():
                 persis_info = self._receive_from_workers(persis_info)
-                if any(self.W['active'] == 0):
+                if self.anything_new:
+                    self.anything_new = False
                     Work, persis_info, flag = self._alloc_work(self.hist.trim_H(),
                                                                persis_info)
                     if flag:
