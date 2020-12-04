@@ -31,7 +31,7 @@ def model_builder(theta, x, fevals, failures=None):
     var = err.T @ err / ((n * p) - beta.shape[0] - 1)
 
     model = {
-        'betas': beta,
+        'beta': beta,
         'xinput': x,
         'X': X,
         'var': var}
@@ -120,6 +120,5 @@ def obviate_pend_thetas(model, theta, data_status, critthres=0.01, n_keep=1):
         critflag[critinds[:(-n_keep)]] = False
 
     critflag[~wheretheta] = False
-
-    r_obviate = np.array(wheretheta[np.where(critflag)])
+    r_obviate = [np.array(wheretheta[np.where(critflag)])]
     return r_obviate
