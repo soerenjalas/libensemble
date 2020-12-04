@@ -51,7 +51,7 @@ if __name__ == '__main__':
     step_add_theta = 5              # No. of thetas to generate per step, before emulator is rebuilt
     n_explore_theta = 2000          # No. of thetas to explore while selecting the next theta
     build_emul_on_thread = True     # Build emul on background thread
-    errstd_constant = 0.00005       # Constant for generating noise in obs
+    errstd_constant = 0.005       # Constant for generating noise in obs
     quantile_to_failure = 0.95      # Proportion of particles that succeed
 
     # Stop after max_emul_runs runs of the emulator
