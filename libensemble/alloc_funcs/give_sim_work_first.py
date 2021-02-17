@@ -6,6 +6,7 @@ from libensemble.tools.alloc_support import (sim_work, gen_work, count_gens,
 
 # SH TODO: Either replace give_sim_work_first or add a different alloc func (or file?)
 #          Check/update docstring
+#          'worker' should maybe be 'workerID' so know its an int - not an object... (alt. wid or wrk_id etc)
 def give_sim_work_first(W, H, sim_specs, gen_specs, alloc_specs, persis_info):
     """
     Decide what should be given to workers. This allocation function gives any

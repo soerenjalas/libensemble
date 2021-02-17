@@ -21,6 +21,16 @@ def get_groupsize_from_resources():
     return group_size
 
 
+def any_zero_resource_workers():
+    """Returns True if there are any zero resource workers, else False
+
+    Note that this pertains to whether any exist, not whether they are available"""
+    resources = Resources.resources
+    if resources.zero_resource_workers:
+        return True
+    return False
+
+
 # SH TODO: An alt. could be to return an object
 #          When merge CWP branch - will need option to use active receive worker
 def get_avail_workers_by_group(W, persistent=None, zero_resource_workers=None):

@@ -414,6 +414,7 @@ class WorkerResources:
         #          in set_worker_team without passing resources again.
         #          Consider naming of workers_per_node - given that is is the fixed mapping (and having excluded zrw)
         #          - possibly fixed_workers_per_node or maybe resource_sets or rsets_per_node...
+        import pdb;pdb.set_trace()
         self.zero_resource_workers = resources.zero_resource_workers
         self.index_list, self.group_list, self.split_list = \
             WorkerResources.get_partitioned_nodelist(self.num_workers, resources)

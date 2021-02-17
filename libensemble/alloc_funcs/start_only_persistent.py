@@ -34,6 +34,8 @@ def only_persistent_gens(W, H, sim_specs, gen_specs, alloc_specs, persis_info):
             # Otherwise, give nothing to i
             returned_but_not_given = np.logical_and.reduce((H['returned'], ~H['given_back'], H['gen_worker'] == i))
             if np.any(returned_but_not_given):
+                #import pdb;pdb.set_trace()
+                # Only gives one value at a time.
                 inds_to_give = np.where(returned_but_not_given)[0]
                 gen_work(Work, i,
                          sim_specs['in'] + [n[0] for n in sim_specs['out']] + [('sim_id')],
