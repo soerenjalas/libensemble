@@ -42,11 +42,10 @@ def only_persistent_gens(W, H, sim_specs, gen_specs, alloc_specs, persis_info):
             # Otherwise, give nothing to i
             gen_inds = (H['gen_worker'] == i)
             if np.all(H['returned'][gen_inds]):
-                import ipdb; ipdb.set_trace()
                 last_time_gen_gave_batch = np.max(H['gen_time'][gen_inds])
                 inds_to_give = H['sim_id'][gen_inds][H['gen_time'][gen_inds] == last_time_gen_gave_batch]
                 gen_work(Work, i,
-                         sim_specs['in'] + [n[0] for n in sim_specs['out']] + [('sim_id')],
+                         sim_specs['in'] + [n[0] for n in sim_specs['out']],
                          np.atleast_1d(inds_to_give), persis_info.get(i), persistent=True)
 
                 H['given_back'][inds_to_give] = True
