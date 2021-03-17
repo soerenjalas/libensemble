@@ -47,7 +47,7 @@ w = (-1.0, -1.0)  # Must be a tuple
 
 # State the objective function, its arguments, output, and necessary parameters (and their sizes)
 sim_specs = {'sim_f': deap_six_hump,  # This is the function whose output is being minimized
-             'in': ['individual'],  # These keys will be given to the above function
+             'in': ['sim_id','individual'],  # These keys will be given to the above function
              'out': [('fitness_values', float, num_obj)]  # This output is being minimized
              }  # end of sim spec
 
