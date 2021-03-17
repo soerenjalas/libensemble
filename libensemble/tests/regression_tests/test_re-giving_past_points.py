@@ -23,22 +23,26 @@ if nworkers < 2:
     sys.exit("Cannot run with a persistent worker if only one worker -- aborting...")
 
 n = 4
-num_arms = 10
-draw_max = 200
+num_arms = 8
+max_gen_calls = 3
+init_pulls = 10
+batch_size = 20
+draw_max = init_pulls + (max_gen_calls-1)*batch_size
 
 np.random.seed(0)
 sim_specs = {'sim_f': sim_f,
-             'in': ['sim_id','arms'],
-             'out': [('f', int)],
+             'in': ['sim_id','arms','num_new_pulls'],
+             'out': [('last_f_results', int, draw_max)],
              'user': {'probabilities': np.random.uniform(0,1,num_arms)}
              }
 
 gen_specs = {'gen_f': gen_f,
-             'in': ['f'],
-             'out': [('arms', float, n), ('pulls', int), ('f_results', int, draw_max), ('f_results_ind', int), ('estimated_p', float)],
+             'in': ['last_f_results', 'sim_id'],
+             'out': [('sim_id', int), ('arms', float, n), ('num_new_pulls', int), ('num_completed_pulls', int), ('f_results', int, draw_max), ('estimated_p', float)],
              'user': {'epsilon': 0.1,
-                      'init_pulls': 10,
-                      'num_arms': 10,
+                      'init_pulls': init_pulls,
+                      'batch_size': batch_size,
+                      'num_arms': num_arms,
                       'draw_max': draw_max,
                       'arm_dimension': n}
              }
@@ -47,7 +51,7 @@ alloc_specs = {'alloc_f': alloc_f, 'out': [('given_back', bool)]}
 
 persis_info = add_unique_random_streams({}, nworkers + 1)
 
-exit_criteria = {'sim_max': draw_max, 'elapsed_wallclock_time': 300}
+exit_criteria = {'gen_return_max': max_gen_calls}
 
 # Perform the run
 H, persis_info, flag = libE(sim_specs, gen_specs, exit_criteria, persis_info,
