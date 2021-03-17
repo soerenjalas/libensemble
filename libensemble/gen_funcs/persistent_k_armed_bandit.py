@@ -22,18 +22,25 @@ def persistent_epsilon_greedy(H, persis_info, gen_specs, libE_info):
     n = gen_specs['user']['arm_dimension']
     draw_max = gen_specs['user']['draw_max']
 
-    import ipdb; ipdb.set_trace()
-
-    dtype_list = [('arms', float, n), ('f_results', int, draw_max), ('f_results_ind', int), ('estimated_p', float)]
+    dtype_list = [('arms', float, n), ('pulls', int), ('f_results', int, draw_max), ('f_results_ind', int), ('estimated_p', float)]
 
     H_o = np.zeros(num_arms, dtype=dtype_list)
     H_o['arms'] = persis_info['rand_stream'].uniform(0, 1, (num_arms, n))
+    H_o['pulls'] = init_pulls
+
+    tag = None
+
+    # first send back the arms and init_pulls
+    tag, Work, calc_in = sendrecv_mgr_worker_msg(libE_info['comm'], H_o[['arms','pulls']])
+
+    import ipdb; ipdb.set_trace()
 
     # Send batches until manager sends stop tag
-    tag = None
     while tag not in [STOP_TAG, PERSIS_STOP]:
         for i in range(init_pulls):
             tag, Work, calc_in = sendrecv_mgr_worker_msg(libE_info['comm'], H_o['arms'])
+
+            import ipdb; ipdb.set_trace()
 
             if calc_in is not None:
                 H_o['f'] = calc_in['f']

@@ -35,7 +35,7 @@ sim_specs = {'sim_f': sim_f,
 
 gen_specs = {'gen_f': gen_f,
              'in': ['f'],
-             'out': [('arms', float, n), ('f_results', int, draw_max), ('f_results_ind', int), ('estimated_p', float)],
+             'out': [('arms', float, n), ('pulls', int), ('f_results', int, draw_max), ('f_results_ind', int), ('estimated_p', float)],
              'user': {'epsilon': 0.1,
                       'init_pulls': 10,
                       'num_arms': 10,
