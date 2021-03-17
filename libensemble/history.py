@@ -83,7 +83,7 @@ class History:
         self.index = self.offset
 
         self.given_count = np.sum(H['given'])
-
+        self.num_gen_return = 0
         self.sim_count = np.sum(H['returned'])
 
     def update_history_f(self, D, safe_mode):
@@ -185,6 +185,7 @@ class History:
         self.H['gen_time'][first_gen_inds] = time.time()
         self.H['gen_worker'][first_gen_inds] = gen_worker
         self.index += num_new
+        self.num_gen_return += 1
 
     def grow_H(self, k):
         """

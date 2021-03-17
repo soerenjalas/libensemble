@@ -149,6 +149,7 @@ class Manager:
             [(2, 'elapsed_wallclock_time', self.term_test_wallclock),
              (1, 'sim_max', self.term_test_sim_max),
              (1, 'gen_max', self.term_test_gen_max),
+             (1, 'gen_return_max', self.term_test_gen_return_max),
              (1, 'stop_val', self.term_test_stop_val)]
 
         temp_EnsembleDirectory = EnsembleDirectory(libE_specs=libE_specs)
@@ -168,12 +169,16 @@ class Manager:
         return self.elapsed() >= max_elapsed
 
     def term_test_sim_max(self, sim_max):
-        """Checks against max simulations"""
+        """Checks against max number of given simulations"""
         return self.hist.given_count >= sim_max + self.hist.offset
 
     def term_test_gen_max(self, gen_max):
-        """Checks against max generator calls"""
+        """Checks against max number of generated rows"""
         return self.hist.index >= gen_max + self.hist.offset
+
+    def term_test_gen_return_max(self, gen_return_max):
+        """Checks against max number of generated rows"""
+        return self.hist.num_gen_return >= gen_return_max
 
     def term_test_stop_val(self, stop_val):
         """Checks against stop value criterion"""
