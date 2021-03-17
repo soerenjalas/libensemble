@@ -31,14 +31,15 @@ draw_max = init_pulls + (max_gen_calls-1)*batch_size
 
 np.random.seed(0)
 sim_specs = {'sim_f': sim_f,
-             'in': ['sim_id','arms','num_new_pulls'],
+             'in': ['sim_id', 'arms', 'num_new_pulls'],
              'out': [('last_f_results', int, draw_max)],
-             'user': {'probabilities': np.random.uniform(0,1,num_arms)}
+             'user': {'probabilities': np.random.uniform(0, 1, num_arms)}
              }
 
 gen_specs = {'gen_f': gen_f,
              'in': ['last_f_results', 'sim_id'],
-             'out': [('sim_id', int), ('arms', float, n), ('num_new_pulls', int), ('num_completed_pulls', int), ('f_results', int, draw_max), ('estimated_p', float)],
+             'out': [('sim_id', int), ('arms', float, n), ('num_new_pulls', int),
+                     ('num_completed_pulls', int), ('f_results', int, draw_max), ('estimated_p', float)],
              'user': {'epsilon': 0.1,
                       'init_pulls': init_pulls,
                       'batch_size': batch_size,

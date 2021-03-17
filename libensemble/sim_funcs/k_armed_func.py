@@ -16,11 +16,11 @@ def k_armed_func(H, persis_info, sim_specs, _):
 
     H_o = np.zeros(1, dtype=sim_specs['out'])
 
-    assert len(H)==1, "This function is only for single rows"
+    assert len(H) == 1, "This function is only for single rows"
 
     p = sim_specs['user']['probabilities'][H['sim_id']]
     n = H['num_new_pulls'][0]
 
-    H_o['last_f_results'][0,:n] = np.random.binomial(1, p=p, size=n)
+    H_o['last_f_results'][0, :n] = np.random.binomial(1, p=p, size=n)
 
     return H_o, persis_info
