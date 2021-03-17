@@ -20,8 +20,8 @@ def persistent_epsilon_greedy(H, persis_info, gen_specs, libE_info):
     for a k-armed bandit problem. The generation function
     - generates the "num_arms" arms
     - intially: requests each arm to be evaluated "init_pulls" times
-    - thereafter: requests the best arm to be evaluated with probability
-      1-"epsilon" and a random arm with probability "epsilon"
+    - thereafter: produces a "batch_size" number of points. Each member of the batch is
+      the best arm with with probability 1-"epsilon" and a random arm with probability "epsilon"
 
     .. seealso::
         `test_persistent_k-armed_bandit.py <https://github.com/Libensemble/libensemble/blob/develop/libensemble/tests/regression_tests/test_persistent_k-armed_bandid.py>`_ # noqa
@@ -39,12 +39,14 @@ def persistent_epsilon_greedy(H, persis_info, gen_specs, libE_info):
 
     tag = None
 
-    # first send back the arms and init_pulls
+    # first send back all arms
     tag, Work, calc_in = sendrecv_mgr_worker_msg(libE_info['comm'], local_H[['sim_id', 'arms', 'num_new_pulls']])
 
     # Send batches until manager sends stop tag
     while tag not in [STOP_TAG, PERSIS_STOP]:
         update_local_history(calc_in, local_H)
+
+        # Reset number of new pulls after updating local history
         local_H['num_new_pulls'] = 0
         best_arm = np.argmax(local_H['estimated_p'])
         for i in range(batch_size):
