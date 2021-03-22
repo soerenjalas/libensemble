@@ -23,34 +23,16 @@ def only_persistent_gens(W, H, sim_specs, gen_specs, alloc_specs, persis_info):
         return Work, persis_info, 1
 
     for i in avail_worker_ids(W, persistent=True):
-        if gen_specs['user'].get('async', False):
-            # If i is in persistent mode, asynchronous behavior is desired, and
-            # *any* of its calculated values have returned, give them back to i.
-            # Otherwise, give nothing to i
-            returned_but_not_given = np.logical_and.reduce((H['returned'], ~H['given_back'], H['gen_worker'] == i))
-            if np.any(returned_but_not_given):
-                inds_to_give = np.where(returned_but_not_given)[0]
-                gen_work(Work, i,
-                         sim_specs['in'] + [n[0] for n in sim_specs['out']] + [('sim_id')],
-                         np.atleast_1d(inds_to_give), persis_info.get(i), persistent=True)
+        # If i is in persistent mode, batch behavior is desired, and
+        # *all* of its last-requested values have returned, give them back to i.
+        # Otherwise, give nothing to i
+        if np.all(H['returned_time'] > H['last_gen_time']):
+            inds_to_give = H['sim_id']
+            gen_work(Work, i,
+                     sim_specs['in'] + [n[0] for n in sim_specs['out']],
+                     np.atleast_1d(inds_to_give), persis_info.get(i), persistent=True)
 
-                H['given_back'][inds_to_give] = True
-
-        else:
-            # If i is in persistent mode, batch behavior is desired, and
-            # *all* of its calculated values have returned, give them back to i.
-            # Otherwise, give nothing to i
-            gen_inds = (H['gen_worker'] == i)
-            if np.all(H['returned'][gen_inds]):
-                last_time_gen_gave_batch = np.max(H['gen_time'][gen_inds])
-                inds_to_give = H['sim_id'][gen_inds][H['gen_time'][gen_inds] == last_time_gen_gave_batch]
-                gen_work(Work, i,
-                         sim_specs['in'] + [n[0] for n in sim_specs['out']],
-                         np.atleast_1d(inds_to_give), persis_info.get(i), persistent=True)
-
-                H['given_back'][inds_to_give] = True
-
-    task_avail = ~H['given']
+    task_avail = np.logical_or(~H['given'], H['last_gen_time'] > H['last_given_time'])
     for i in avail_worker_ids(W, persistent=False):
         if np.any(task_avail):
             # perform sim evaluations (if they exist in History).

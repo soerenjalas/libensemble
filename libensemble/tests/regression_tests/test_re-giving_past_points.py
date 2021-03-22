@@ -23,10 +23,10 @@ if nworkers < 2:
     sys.exit("Cannot run with a persistent worker if only one worker -- aborting...")
 
 n = 4
-num_arms = 2
-max_gen_calls = 3
-init_pulls = 2
-batch_size = 3
+num_arms = 8
+max_gen_calls = 10
+init_pulls = 10
+batch_size = 20
 draw_max = init_pulls + (max_gen_calls-1)*batch_size
 
 k = np.zeros(num_arms) 
@@ -36,8 +36,7 @@ np.random.seed(0)
 sim_specs = {'sim_f': sim_f,
              'in': ['sim_id', 'arms', 'num_new_pulls'],
              'out': [('last_f_results', int, draw_max)],
-             # 'user': {'probabilities': np.random.uniform(0, 1, num_arms)}
-             'user': {'probabilities': k}
+             'user': {'probabilities': np.random.uniform(0, 1, num_arms)}
              }
 
 gen_specs = {'gen_f': gen_f,
@@ -63,10 +62,5 @@ H, persis_info, flag = libE(sim_specs, gen_specs, exit_criteria, persis_info,
                             alloc_specs, libE_specs)
 
 if is_manager:
-    # import ipdb; ipdb.set_trace()
-    # [_, counts] = np.unique(H['gen_time'], return_counts=True)
-    # print(counts)
-    # assert counts[0] == nworkers - 1, "The first gen_time should be common among gen_batch_size number of points"
-    # assert len(np.unique(counts)) > 1, "There is no variablitiy in the gen_times but there should be for the async case"
-
+    assert sum(H['num_completed_pulls']) > 0, "Why no completed pulls"
     save_libE_output(H, persis_info, __file__, nworkers)

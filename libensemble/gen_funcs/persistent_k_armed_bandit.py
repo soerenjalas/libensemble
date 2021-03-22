@@ -12,6 +12,7 @@ def update_local_history(calc_in, H):
         H['f_results'][sim_id][start:end] = calc_in['last_f_results'][i, :new]
         H['estimated_p'][sim_id] = np.mean(H[sim_id]['f_results'][:end])
         H['num_completed_pulls'][sim_id] = end
+    print(H['num_completed_pulls'])
 
 
 def persistent_epsilon_greedy(H, persis_info, gen_specs, libE_info):
@@ -57,5 +58,9 @@ def persistent_epsilon_greedy(H, persis_info, gen_specs, libE_info):
                 local_H[best_arm]['num_new_pulls'] += 1
 
         tag, Work, calc_in = sendrecv_mgr_worker_msg(libE_info['comm'], local_H[['sim_id', 'arms', 'num_new_pulls']])
+        
+        break
+
+    update_local_history(calc_in, local_H)
 
     return local_H, persis_info, FINISHED_PERSISTENT_GEN_TAG
