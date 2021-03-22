@@ -29,7 +29,7 @@ init_pulls = 10
 batch_size = 20
 draw_max = init_pulls + (max_gen_calls-1)*batch_size
 
-k = np.zeros(num_arms) 
+k = np.zeros(num_arms)
 k[0] = 1
 
 np.random.seed(0)

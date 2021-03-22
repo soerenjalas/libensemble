@@ -58,7 +58,7 @@ def persistent_epsilon_greedy(H, persis_info, gen_specs, libE_info):
                 local_H[best_arm]['num_new_pulls'] += 1
 
         tag, Work, calc_in = sendrecv_mgr_worker_msg(libE_info['comm'], local_H[['sim_id', 'arms', 'num_new_pulls']])
-        
+
         break
 
     update_local_history(calc_in, local_H)
