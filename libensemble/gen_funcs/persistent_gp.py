@@ -288,10 +288,9 @@ def persistent_gp_ax_gen_f(H, persis_info, gen_specs, libE_info):
         # Store this information in the format expected by libE
         H_o = np.zeros(number_of_gen_points, dtype=gen_specs['out'])
         for i in range(number_of_gen_points):
-            parameters, trial_index = ax_client.get_next_trial()
+            parameters, _ = ax_client.get_next_trial()
             # Transform ax parameter dict to list
             input_vector = list(parameters.values())
-            H_o['ax_trial'] = trial_index
             H_o['x'][i] = input_vector
 
         # Send data and get results from finished simulation
@@ -302,7 +301,7 @@ def persistent_gp_ax_gen_f(H, persis_info, gen_specs, libE_info):
             n = len(calc_in['f'])
             # Update the GP with latest simulation results
             for i in range(n):
-                trial_index = calc_in['ax_trial']
+                trial_index = int(calc_in['sim_id'][i])
                 y = calc_in['f'][i]
                 # Register trial with unknown SEM
                 ax_client.complete_trial(trial_index, {metric_name: (y, np.nan)})
