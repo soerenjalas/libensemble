@@ -310,6 +310,8 @@ def persistent_gp_ax_gen_f(H, persis_info, gen_specs, libE_info):
         else:
             number_of_gen_points = 0
 
+    ax_client.save_to_json_file('ax_client.json')
+
     return H_o, persis_info, FINISHED_PERSISTENT_GEN_TAG
 
 
